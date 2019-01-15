@@ -1,0 +1,38 @@
+// Contents   : NMR relaxing fitting
+// Need       : NMRfunc(macro),NMRX
+// Author     : Tsunakawa
+// LastUpdate : 2018/12/13
+// Since      : 2018/08/01
+// Version    : 6.2.2.0
+
+
+Macro relaxMacro(k,m)
+ Variable k,m
+ Prompt k,"temperature"
+// Prompt l,"att"
+ Prompt m,"Cu"
+ 
+string/G name_T = "T_" + num2str(m) + "_" + num2str(k) + "K"
+string/G name_M = "M_" + num2str(m) + "_" + num2str(k) + "K"
+string/G name_Z = "y_" + num2str(m) + "_" + num2str(k) + "K"
+string/G name_fitM = "fit_M_" + num2str(m) + "_" + num2str(k) + "K"
+
+edit as num2str(m) + "Cu_" + num2str(k) + "K"
+appendtotable wave0,wave1,wave2
+rename wave0,$(name_T)
+rename wave1,$(name_M)
+rename wave2,$(name_Z)
+display $(name_M) vs $(name_T) as num2str(m) + "Cu_" + num2str(k) + "K"
+ModifyGraph mode=3
+ModifyGraph tick=2,mirror=1,standoff=0,font="Times New Roman";DelayUpdate
+Label left "\\f02M";DelayUpdate
+Label bottom "\\f02T\\f00 (\\F'Times New Roman'ms)"
+
+
+Make/D/N=3/O W_coef
+W_coef[0] = {120000,1,200}
+FuncFit/NTHR=0/TBOX=832 NMRrelax W_coef  $(name_M) /X=$(name_T) /D 
+ModifyGraph rgb($(name_fitM))=(0,0,65280)
+
+
+End
