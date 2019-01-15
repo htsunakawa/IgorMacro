@@ -1,0 +1,48 @@
+// Contents   : NMR lorentz fit function and relax function
+// Need       : 
+// Author     : Tsunakawa
+// LastUpdate : 2018/12/11
+// Since      : 2018/08/01
+// Igor Version : 6.2.2.0
+
+
+#pragma rtGlobals=1		// Use modern global access method.
+
+Function NMRlor(w,x) : FitFunc
+	Wave w
+	Variable x
+
+	//CurveFitDialog/ これらのコメントは回帰分析ダイアログにより作成されました。変更すると
+	//CurveFitDialog/ 回帰分析ダイアログにおける関数操作が不便になります。
+	//CurveFitDialog/ Equation:
+	//CurveFitDialog/ f(x) = (2*A/pi)*w/(4*(x-f0)^2 + w^2)
+	//CurveFitDialog/ End of Equation
+	//CurveFitDialog/ Independent Variables 1
+	//CurveFitDialog/ x
+	//CurveFitDialog/ Coefficients 3
+	//CurveFitDialog/ w[0] = A
+	//CurveFitDialog/ w[1] = w
+	//CurveFitDialog/ w[2] = f0
+
+	return (2*w[0]/pi)*w[1]/(4*(x-w[2])^2 + w[1]^2)
+End
+
+
+Function NMRrelax(w,t) : FitFunc
+	Wave w
+	Variable t
+
+	//CurveFitDialog/ これらのコメントは回帰分析ダイアログにより作成されました。変更すると
+	//CurveFitDialog/ 回帰分析ダイアログにおける関数操作が不便になります。
+	//CurveFitDialog/ Equation:
+	//CurveFitDialog/ f(t) = M0*(1-A*exp(-t/T1))
+	//CurveFitDialog/ End of Equation
+	//CurveFitDialog/ Independent Variables 1
+	//CurveFitDialog/ t
+	//CurveFitDialog/ Coefficients 3
+	//CurveFitDialog/ w[0] = M0
+	//CurveFitDialog/ w[1] = A
+	//CurveFitDialog/ w[2] = T1
+
+	return w[0]*(1-w[1]*exp(-t/w[2]))
+End
