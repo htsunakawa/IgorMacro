@@ -1,0 +1,22 @@
+// Contents   : NMR relaxing fitting
+// Need       : NMRfunc(macro),NMRX
+// Author     : Tsunakawa
+// LastUpdate : 2018/12/25
+// Since      : 2018/12/21
+
+Macro FittingTabulate(t)
+	Variable t
+	Prompt t,"temperature"
+
+insertpoints DimSize(Temp,0),1,Temp
+insertpoints DimSize(Name,0),1,Name
+insertpoints DimSize(A,0),      1,A
+insertpoints DimSize(w,0),      1,w
+insertpoints DimSize(f0,0),     1,f0
+
+temp(DimSize(temp ,0)) = t
+A(DimSize(A ,0)) = W_coef(0)
+w(DimSize(w ,0)) = W_coef(1)
+f0(DimSize(f0,0)) = W_coef(2)
+
+EndMacro
